@@ -5,18 +5,18 @@
         "alias": "GitHub"
     },
     {
-        "url": "www.reddit.com",
+        "url": "www.python.org",
         "port": 443,
-        "alias": "Reddit"
+        "alias": "Python"
     },
     {
-        "url": "www.google.com",
-        "port": 80,
-        "alias": "Google"
+        "url": "telegram.org",
+        "port": 443,
+        "alias": "Telegram"
     },
     {
-        "url": "www.apple.com",
+        "url": "192.168.0.1",
         "port": 80,
-        "alias": null
+        "alias": "My Router"
     }
 ]
