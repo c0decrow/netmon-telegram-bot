@@ -6,8 +6,8 @@
 [![](https://images.microbadger.com/badges/version/circa10a/device-monitor-dashboard.svg)](https://microbadger.com/images/circa10a/device-monitor-dashboard "Get your own version badge on microbadger.com")
 
 Python script for network devices monitoring dashboard integrated with Telegram bot notifications. A lightweight monitoring and reporting solution using Telgram API functionality. The script does two things at the same time:
-* Dynamically generates a monitoring dashboard web page which is periodically refreshed with current status of the devices in the list
-* Uses your own Telegram bot for notifications when a device changes its status (going from online to offline and vice versa)
+* Dynamically generates a monitoring dashboard web page which is periodically refreshed with current status of the devices in the list.
+* Uses your own Telegram bot for notifications when a device changes its status (going from online to offline and vice versa).
 
 This can be used for for servers, networking equipment, cameras, IOT devices, anything that has an IP address and is pingable.
 Supports:
@@ -16,9 +16,9 @@ Supports:
  * Raspberry Pi
 
 The current version is developed and tested on Debian Linux, and the install script is working only on Debian based Linux distibutions (Debian, Ubuntu, Mint). However, it could be easily deployed on other OS types provided the following required software is installed:
-* python
+* python (2.7 or 3.x)
 * jinja2 (installed by python pip)
-* nginx
+* nginx (optionally Apache)
 
 The project could also be run inside a Docker container. 
 Editted instructions will be provided.
@@ -32,6 +32,7 @@ Telegram bot brief instructions will be provided bellow.
 ## Changelog
 ---
  - 21/1/2020: Project repository forked
+ - 22/1/2020: Added IP address column on the dashboard, dynamic percentage of online devices in the page title. Green or red favicon for better visibility of the status.
 
 ## Easy Install
 ---
@@ -40,14 +41,14 @@ Telegram bot brief instructions will be provided bellow.
 bash -c "$(curl -sL https://raw.githubusercontent.com/c0decrow/netmon-telegram-bot/master/install.sh)"
 ```
 
-- Nginx and Python required for Easy Install
-- Tested with Ubuntu 16.04.3 / Nginx 1.10.3 / Python 2.7
-- Follow the prompts!
+- Python and Nginx required for Easy Install
+- Tested with Ubuntu 18.04.3 LTS / Nginx 1.14.0 / Python 2.7.17
+- Just follow the prompts!
 
 ## Usage
 ---
-- Have a JSON file(array of objects) with hostnames, port, alias
-  - Example JSON file
+- Edit the JSON file (hostnames.json) with the devices you want to monitor (values hostname, port, alias).
+  - Example:
 
  ```json
 [
@@ -57,27 +58,37 @@ bash -c "$(curl -sL https://raw.githubusercontent.com/c0decrow/netmon-telegram-b
         "alias": "GitHub"
     },
     {
-        "url": "www.reddit.com",
+        "url": "www.python.org",
         "port": 443,
-        "alias": "Reddit"
+        "alias": "Python"
     },
     {
-        "url": "www.google.com",
-        "port": 80,
-        "alias": "Google"
+        "url": "telegram.org",
+        "port": 443,
+        "alias": "Telegram"
     },
     {
-        "url": "www.apple.com",
+        "url": "192.168.0.1",
         "port": 80,
-        "alias": null
+        "alias": "My Router"
     }
 ]
  ```
 
-- Update the python script (variable at the top) with the path/name of your file with hostnames and output file path.(default hostnames= `./hostnames.json   default output= `./index.html`)
+- Update the report.py script with your-Telegram-bot-token and your-Telegram-bot-chat-ID:
+TOKEN = "<my_telegram_bot_token>"
+CHAT_ID = "<my_telegram_bot_chat_id>"
+This way the bot will know the destination chat to send you the notifications.
+- Go to the project directory where the script is located:
+cd /var/www/html/monitor/
 - Run `python report.py`
-- Ensure that you place the output HTML file in the project directory so it can find its web dependencies
-  - Page automcatically reloads every 60 seconds.
+- The output HTML file in generated in the project directory so it can find its web dependencies.
+- Test are done every 120 seconds.
+- Page automcatically reloads every 120 seconds.
+- In order to minimize any false alarms and host 'flapping' there's a tollerance variable configured, which means that:
+  - when UP, there must be two consecutive failed ping / connection tests to the device after which it will be declared DOWN and Telegram message will be sent.
+  - when DOWN, there must be two consecutive successfull ping / connection tests to the device after which it will be declared UP and Telegram message will be sent.
+  - That means that using the default settings notifications will be received 240 seconds after the corresponding event.
 
 ## Docker!
 ---
