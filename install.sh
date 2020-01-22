@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 nginxdir="/var/www/html"
-gitproject="https://github.com/circa10a/Device-Monitor-Dashboard.git"
+gitproject="https://github.com/c0decrow/netmon-telegram-bot.git"
 project="monitor"
 
 func_python() {
@@ -239,13 +239,13 @@ if_ubuntu
 
 $green
 echo "#########################################"
-echo "# Device-Monitor-Dashboard Easy Install #"
+echo "# NetMon-Telegram-Bot Easy Install #"
 echo "#########################################"
 echo
 $yellow
-echo "Nginx is required to deploy IOT-Monitor-Dashboard via Easy-Install."
+echo "Nginx is required to deploy NetMon-Telegram-Bot via Easy-Install."
 echo "This script can install packages for you, but you must be root."
-echo "Alternatively, you can use docker, please see https://github.com/circa10a/Device-Monitor-Dashboard"
+echo "Alternatively, you can use docker, please see https://github.com/c0decrow/netmon-telegram-bot"
 echo
 sleep 3
 $reset
