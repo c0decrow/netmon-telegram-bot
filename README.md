@@ -1,18 +1,29 @@
-# device-monitor-dashboard
+# netmon-telegram-bot
 [![Build Status](https://travis-ci.org/circa10a/device-monitor-dashboard.svg?branch=master)](https://travis-ci.org/circa10a/device-monitor-dashboard)
 [![Docker Repository on Quay](https://quay.io/repository/circa10a/device-monitor-dashboard/status "Docker Repository on Quay")](https://quay.io/repository/circa10a/device-monitor-dashboard)
 [![Docker Automated buil](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](https://hub.docker.com/r/circa10a/device-monitor-dashboard/)
 [![](https://images.microbadger.com/badges/image/circa10a/device-monitor-dashboard.svg)](https://microbadger.com/images/circa10a/device-monitor-dashboard "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/circa10a/device-monitor-dashboard.svg)](https://microbadger.com/images/circa10a/device-monitor-dashboard "Get your own version badge on microbadger.com")
 
-Python script to generate html report of devices' online/offline status. A cheap/fun reporting solution.
-This can be used for for servers, networking equipment, IOT devices, anything that's "pingable".
-Supports:
+Python script for network devices monitoring dashboard integrated with Telegram bot notifications. A lightweight monitoring and reporting solution using Telgram API functionality. The script does two things at the same time:
+* Dynamically generates a monitoring dashboard web page which is periodically refreshed with current status of the devices in the list
+* Uses your own Telegram bot for notifications when a device changes its status (going from online to offline and vice versa)
 
+This can be used for for servers, networking equipment, cameras, IOT devices, anything that has an IP address and is pingable.
+Supports:
  * Linux
  * Windows
  * Raspberry Pi
 
+The current version is developed and tested on Debian Linux, and the install script is working only on Debian based Linux distibutions (Debian, Ubuntu, Mint). However, it could be easily deployed on other OS types provided the following required software is installed:
+* python
+* jinja2 (installed by python pip)
+* nginx
+
+The project could also be run inside a Docker container. 
+Editted instructions will be provided.
+
+Telegram bot brief instructions will be provided bellow.
 
 ### Live Demo:
 [100% Devices Up](http://caleblemoine.dev/monitor/) / [Failing Devices](http://caleblemoine.dev/monitor/fail)
@@ -80,7 +91,7 @@ docker run -d -p 80:80 -v ~/path/to/your/hostnames.json:/usr/share/nginx/html/ho
 ### Build your own docker image:
 
 ```bash
-git clone https://github.com/circa10a/Device-Monitor-Dashboard.git
+git clone https://github.com/c0decrow/netmon-telegram-bot.git
 cd Device-Monitor-Dashboard
 ```
 
