@@ -11,10 +11,32 @@ func_python() {
     echo "Python already Installed"
     $reset
     echo
+    sleep 1
     if command -v pip --version >/dev/null; then
       $green
       echo "Pip already Installed"
       $reset
+      sleep 1
+      echo "Checking pip packet 'Jinja2':"
+      pip show Jinja2
+      if [[ $? == 1 ]]; then
+        echo "Installing pip packet 'Jinja2':"
+        pip install jinja2
+      else
+        $green; echo "'Jinja2' found!"
+      fi
+      echo
+      $reset
+      sleep 1
+      echo "Checking pip packet 'requests':"
+      pip show requests
+      if [[ $? == 1 ]]; then 
+        echo "Installing pip packet 'requests':"
+	pip install requests
+      else
+        $green; echo "'requests' found!"
+      fi
+      echo
     else
       $red
       echo "Pip not installed"
@@ -29,6 +51,7 @@ func_python() {
           apt-get update
           apt-get install python-pip -y
           pip install jinja2
+          pip install requests
         fi
       elif [ "$answer" == "n" ]; then
         $red
@@ -124,83 +147,14 @@ func_nginx() {
     sleep 3
     exit 1
   fi
-  cat /dev/null >$nginxdir/$project/hostnames.txt
-  $yellow
-  echo
-  echo "Enter the hostnames or ip addresses you would like to monitor"
-  echo "One by one and pressing enter after the name/address with an alias."
-  echo "3 fields required, Example:"
-  echo
-  echo "www.google.com, 443, Google"
-  echo "192.168.1.100, 3306, MySQL"
-  echo
-  echo "When your list is complete type \"done\""
-  echo
-  $reset
-
-  while [[ $input != "done" ]]; do
-    read input
-    if [ "$input" == "done" ]; then
-      break
-    else
-      echo $input >>$nginxdir/$project/hostnames.txt
-    fi
-  done
-
-  if [ $? == 0 ]; then
-    echo
-    $green
-    echo "hostnames.txt created successfully in $nginxdir/$project"
-    $reset
-  else
-    $red
-    echo "writing hostnames.txt failed"
-    $reset
-  fi
-
-  $yellow
-  echo
-  echo "Would you like to setup a cronjob that runs the monitor every 5 minutes? (y/n)"
-  $reset
-  echo
-  read input
-  if [ "$input" == "y" ]; then
-    (
-      crontab -l 2>/dev/null
-      echo "*/5 * * * * cd $nginxdir/$project/ && /usr/bin/python report.py &> /dev/null"
-    ) | crontab -
-    echo
-    $green
-    echo "Crontab installed"
-    echo
-    sleep 3
-    echo "Check it out"
-    $reset
-    crontab -l
-    sleep 6
-    echo
-  elif [ "$input" == "n" ]; then
-    $green
-    echo "OK, suit yourself. All done"
-    sleep 2
-    echo
-    echo "Exiting..."
-    $reset
-  else
-    $red
-    echo "Unrecognized input. Bye"
-    $reset
-    exit 1
-  fi
 
   $green
   echo
   echo "You're all set! Installation Completed successfully"
   echo
-  echo "If you set up Cron, your web page will be ready in 5 minutes"
-  echo "If you didn't setup cron, you will need to go to $nginxdir/$project and run \"python report.py\""
-  echo "You can access your dashboard at http://$(ifconfig eth0 2>/dev/null | awk '/inet addr:/ {print $2}' | sed 's/addr://')/monitor"
-  echo "You an also update the devices you would like to monitor by editing $nginxdir/$project/hostnames.txt"
+  echo "You will need to go to $nginxdir/$project and run \"python report.py\""
+  echo "You can access your dashboard at http://<your_IP>/monitor"
+  echo "You can  update the devices you would like to monitor by editing $nginxdir/$project/hostnames.json"
   $reset
 }
 
