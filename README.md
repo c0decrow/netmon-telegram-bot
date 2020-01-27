@@ -125,5 +125,5 @@ docker run --name device-monitor -d -p 80:80 myrepo/monitor
 
 ## Screenshots
 ---
-![alt text](https://i.imgur.com/dx3XabN.png)
-![alt text](https://i.imgur.com/k49MfS4.png)
+![alt text](https://i.imgur.com/pKM4avZ.png)
+![alt text](https://i.imgur.com/bLrZN7z.png)
