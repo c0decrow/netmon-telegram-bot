@@ -201,7 +201,7 @@ $reset
 $green; echo -e "\n  * You're all set! Installation Completed successfully"; $reset
 
 $green
-echo -e " \n * You will need to go to $nginxdir/$project and run \"python report.py\""
+echo -e "\n  * You will need to go to $nginxdir/$project and run \"python report.py\""
 echo -e "  * I suggest starting the script inside a screen terminal (apt-get install screen)\n"
 echo -e "  * Dashboard URL after starting: http://<your_IP>/monitor"
 echo -e "  * Update the devices you would like to monitor by editing $nginxdir/$project/hostnames.json \n"; $reset
