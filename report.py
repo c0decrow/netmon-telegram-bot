@@ -12,8 +12,14 @@ import logging
 
 from jinja2 import Environment, FileSystemLoader
 
+#######################
+### User variables: ###
+#######################
 TOKEN = "<my_telegram_bot_token>"
 CHAT_ID = "<my_telegram_bot_chat_id>"
+REFRESH = 120
+#######################
+
 URL = "https://api.telegram.org/bot{}/sendMessage?chat_id={}&text=".format(TOKEN, CHAT_ID)
 
 env = Environment(
@@ -141,7 +147,7 @@ def main():
                             logging.info('API connection failed!')
                             print('API connection failed!')
         createhtml(output_file_name, hosts)
-        time.sleep(120)
+        time.sleep(REFRESH)
 
 if __name__ == "__main__":
     main()
