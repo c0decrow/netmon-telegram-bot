@@ -32,7 +32,9 @@ Telegram bot brief instructions will be provided bellow.
 ## Changelog
 ---
  - 21/1/2020: Project repository forked
+ - 21/1/2020: Telegram functionality integrated.
  - 22/1/2020: Added IP address column on the dashboard, dynamic percentage of online devices in the page title. Green or red favicon for better visibility of the status.
+ - 27/2/2020: Added brief Telegram bot instructions
 
 ## Easy Install
 ---
@@ -44,6 +46,22 @@ bash -c "$(curl -sL https://raw.githubusercontent.com/c0decrow/netmon-telegram-b
 - Python and Nginx required for Easy Install
 - Tested with Ubuntu 18.04.3 LTS / Nginx 1.14.0 / Python 2.7.17
 - Just follow the prompts!
+
+## Create a Telegram bot and get the necessary parameters:
+
+1. BotFather is the one bot to rule them all. It will help you create new bots and change settings for existing ones. 
+Start chat with the BotFather: https://t.me/botfather
+2. /start
+3. /newbot
+4. Choose a name for your bot - this is the name it is displayed with.
+5. Next choose a username for your bot - this is an unique username, which must end with 'bot'.
+6. If successfull the BotFather will give the unique bot token. The token is a string along the lines of 110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw that is required to authorize the bot and send requests to the Bot API. Keep your token secure and store it safely, it can be used by anyone to control your bot.</br>
+This is your "my_telegram_bot_token".
+7. Next we need the chat_id or the telegram user to whom the bot will send updates. In order to get it, find your new bot in Telegram and initiate a chat with it. 
+8. Now open the following URL in your browser:</br>
+https://api.telegram.org/bot<my_telegram_bot_token>/getUpdates</br>
+You should see your message send along with a string of parameters. The only one of interest is the chat ID number: {""chat":{"id":XXXXXXXXX,...} </br>
+This is your "my_telegram_bot_chat_id".
 
 ## Usage
 ---
@@ -75,22 +93,23 @@ bash -c "$(curl -sL https://raw.githubusercontent.com/c0decrow/netmon-telegram-b
 ]
  ```
 
-- Update the report.py script with your-Telegram-bot-token and your-Telegram-bot-chat-ID:
-TOKEN = "<my_telegram_bot_token>"
-CHAT_ID = "<my_telegram_bot_chat_id>"
-This way the bot will know the destination chat to send you the notifications.
+- In order the bot to know the destination chat to send the notifications, update the report.py script with your-Telegram-bot-token and your-Telegram-bot-chat-ID:
+  - TOKEN = "<my_telegram_bot_token>"
+  - CHAT_ID = "<my_telegram_bot_chat_id>"
+  
+- Optionally refresh interval could be set to desired value. Default is 120 seconds, which means that tests are done and page automcatically reloads every 120 seconds:
+  - REFRESH = <value> 
+
 - Go to the project directory where the script is located:
 cd /var/www/html/monitor/
-- Run `python report.py`
+- Run `python report.py` (preferably in 'screen')
 - The output HTML file in generated in the project directory so it can find its web dependencies.
-- Test are done every 120 seconds.
-- Page automcatically reloads every 120 seconds.
 - In order to minimize any false alarms and host 'flapping' there's a tollerance variable configured, which means that:
   - when UP, there must be two consecutive failed ping / connection tests to the device after which it will be declared DOWN and Telegram message will be sent.
   - when DOWN, there must be two consecutive successfull ping / connection tests to the device after which it will be declared UP and Telegram message will be sent.
-  - That means that using the default settings notifications will be received 240 seconds after the corresponding event.
+  - That means that notifications will be received after doubled 'REFRESH' seconds after the corresponding event.
 
-## Docker!
+## Docker! (to be updated)
 ---
 
 ```bash
@@ -116,7 +135,7 @@ docker run --name device-monitor -d -p 80:80 myrepo/monitor
 - Known issue: Docker for Mac pings any address and returns success giving false results.
 ```
 
-## Automation
+## Automation (to be updated)
 ---
 - Setup a web server
 - Install a new cron job to run the report periodically `cd $path/to/project_directory/ && python report.py &> /dev/null`
