@@ -16,9 +16,9 @@ Supports:
  * Raspberry Pi
 
 The current version is developed and tested on Debian Linux, and the install script is working only on Debian based Linux distibutions (Debian, Ubuntu, Mint). However, it could be easily deployed on other OS types provided the following required software is installed:
-* python (2.7 or 3.x)
-* jinja2 (installed by python pip)
 * nginx (optionally Apache)
+* python (2.7 or 3.x)
+* jinja2 and requests (installed by python pip)
 
 The project could also be run inside a Docker container. 
 Editted instructions will be provided.
